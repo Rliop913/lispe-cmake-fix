@@ -1,0 +1,4 @@
+
+set(LISPE_INCLUDES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)

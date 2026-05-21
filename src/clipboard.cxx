@@ -33,7 +33,7 @@ bool copyToClipboard(const std::string& text) {
     }
 }
 #else
-bool copyToClipboard(const std::string& text) {
+bool copyToClipboard(const std::string& text) {//jag.cxx defines same function. recommend remove.
     return true;
 }
 #endif

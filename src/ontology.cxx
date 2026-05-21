@@ -446,18 +446,18 @@ Concept::Concept(Ontology* h) : Element(h->local_concept) {
     ontologie = h;
 }
 
-Concept::Concept(Concept* c) : concept(c->concept), Element(c->ontologie->local_concept) {
+Concept::Concept(Concept* c) : _concept(c->_concept), Element(c->ontologie->local_concept) {
     index = 0;
     semme = c->semme;
     ontologie = c->ontologie;
 }
 
 Concept::Concept(Ontology* h, Concept* c, u_ustring& s, long i) :
-concept(c->concept), Element(h->local_concept) {
+_concept(c->_concept), Element(h->local_concept) {
     semme = s;
     index = i;
     ontologie = h;
-    Granule* g = concept.elements.back();
+    Granule* g = _concept.elements.back();
     long r = Rank(i);
     uint64_t v = Value(i,r);
     if (g->rank == r) {
@@ -465,7 +465,7 @@ concept(c->concept), Element(h->local_concept) {
     }
     else {
         g = new Granule(r, v);
-        concept.elements.push_back(g);
+        _concept.elements.push_back(g);
     }
 }
 
@@ -474,21 +474,21 @@ Concept::Concept(Ontology* h, u_ustring& s, long i) : Element(h->local_concept) 
     ontologie = h;
     semme = s;
     index = i;
-    concept.elements.push_back(new Granule(i));
+    _concept.elements.push_back(new Granule(i));
 }
 
 Element* Concept::concept_remove(Concept* c) {
     if (c == this) {
-        concept.clean();
+        _concept.clean();
         if (!index)
             return ontologie->absurd;
-        concept.concept_or(index);
+        _concept.concept_or(index);
     }
     else {
         if (c->ontologie != ontologie)
             throw new Error("Error: these concepts do not belong to the same ontology");
-        concept.concept_remove(c->concept, index);
-        if (concept.isempty())
+        _concept.concept_remove(c->_concept, index);
+        if (_concept.isempty())
             return ontologie->absurd;
     }
     return this;
@@ -498,8 +498,8 @@ Element* Concept::concept_or(Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
     Concept* n = new Concept(ontologie);
-    concept.concept_or(n->concept, c->concept);
-    if (n->concept.isempty()) {
+    _concept.concept_or(n->_concept, c->_concept);
+    if (n->_concept.isempty()) {
         delete n;
         return ontologie->absurd;
     }
@@ -510,8 +510,8 @@ Element* Concept::concept_xor(Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
     Concept* n = new Concept(ontologie);
-    concept.concept_xor(n->concept, c->concept);
-    if (n->concept.isempty()) {
+    _concept.concept_xor(n->_concept, c->_concept);
+    if (n->_concept.isempty()) {
         delete n;
         return ontologie->absurd;
     }
@@ -522,8 +522,8 @@ Element* Concept::concept_and(Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
     Concept* n = new Concept(ontologie);
-    concept.concept_and(n->concept, c->concept);
-    if (n->concept.isempty()) {
+    _concept.concept_and(n->_concept, c->_concept);
+    if (n->_concept.isempty()) {
         delete n;
         return ontologie->absurd;
     }
@@ -534,8 +534,8 @@ Element* Concept::concept_and_not(Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
     Concept* n = new Concept(ontologie);
-    concept.concept_and_not(n->concept, c->concept);
-    if (n->concept.isempty()) {
+    _concept.concept_and_not(n->_concept, c->_concept);
+    if (n->_concept.isempty()) {
         delete n;
         return ontologie->absurd;
     }
@@ -547,17 +547,17 @@ Element* Concept::concept_not(long mx) {
     long pos = 0;
     uint64_t v;
     for (long i = 0; i < mx; i++) {
-        if (i < concept.elements[pos]->rank || pos == concept.elements.last)
-            n->concept.elements.push_back(new Granule(i, Un));
+        if (i < _concept.elements[pos]->rank || pos == _concept.elements.last)
+            n->_concept.elements.push_back(new Granule(i, Un));
         else {
-            if (i == concept.elements[pos]->rank) {
-                v = ~concept.elements[pos]->values;
-                n->concept.elements.push_back(new Granule(i, v));
+            if (i == _concept.elements[pos]->rank) {
+                v = ~_concept.elements[pos]->values;
+                n->_concept.elements.push_back(new Granule(i, v));
                 ++pos;
             }
         }
     }
-    if (n->concept.isempty()) {
+    if (n->_concept.isempty()) {
         delete n;
         return ontologie->absurd;
     }
@@ -615,14 +615,14 @@ Element* Concept::intersect(LispE* lisp, Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
 
-    return booleans_[concept.intersect(c->concept)];
+    return booleans_[_concept.intersect(c->_concept)];
 }
 
 Element* Concept::contain(LispE* lisp, Concept* c) {
     if (c->ontologie != ontologie)
         throw new Error("Error: these concepts do not belong to the same ontology");
     
-    return booleans_[concept.contain(c->concept)];
+    return booleans_[_concept.contain(c->_concept)];
 }
 
 wstring Concept::asString(LispE*) {
@@ -636,7 +636,7 @@ u_ustring Concept::asUString(LispE*) {
 
 Element* Concept::asList() {
     vecte<long> table;
-    concept.table(table);
+    _concept.table(table);
     List* l = new List;
     u_ustring w;
     for (long i = 0; i < table.size(); i++) {

@@ -68,7 +68,7 @@ class Ontology;
 class Concept : public Element {
 public:
 
-    Concept_element concept;
+    Concept_element _concept;
     u_ustring semme;
     Ontology* ontologie;
     long index;
@@ -81,7 +81,7 @@ public:
     Element* concept_add(Concept* c) {
         if (c->ontologie != ontologie)
             throw new Error("Error: these concepts do not belong to the same ontology");
-        concept.concept_add(c->concept);
+        _concept.concept_add(c->_concept);
         return this;
     }
 
@@ -97,7 +97,7 @@ public:
     Element* contain(LispE*, Concept* c);
 
     bool equal(Concept* c) {
-        return concept.equal(c->concept);
+        return _concept.equal(c->_concept);
     }
 
     Element* bit_not(LispE* l);
@@ -109,7 +109,7 @@ public:
     bool egal(Element* e);
 
     long size() {
-        return concept.count();
+        return _concept.count();
     }
     
     wstring asString(LispE*);

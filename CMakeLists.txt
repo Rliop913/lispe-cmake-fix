@@ -46,10 +46,15 @@ add_executable(
     lispe
     ${LISPE_CXX}
     ${LISPE_MAIN}
-
 )
-target_include_directories(lispe PRIVATE ${LISPE_INCLUDES})
 
+
+target_include_directories(lispe PRIVATE ${LISPE_INCLUDES})
+if(WIN32)
+target_link_libraries(lispe PRIVATE 
+ws2_32 #links winSocket
+)
+endif(WIN32)
 
 endif(LISPE_EXECUTABLE)
 

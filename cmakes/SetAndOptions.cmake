@@ -25,4 +25,5 @@ option(LISPE_DYNAMIC "Build LispE With Dynamic Library" OFF)
 option(LISPE_TEST "Build LispE Tests" ON)
 option(LISPE_INSTALL "Install LispE" ON)
 option(LISPE_EXECUTABLE "Build LispE Executable Files" ON)
-
+option(POSIXREGEX "Enable standard regex" ON)
+option(BOOSTPOSIXREGEX "Enable Boost regex" ON)

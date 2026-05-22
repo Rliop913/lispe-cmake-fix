@@ -28,7 +28,14 @@ include(cmakes/findPackages.cmake)
 include(cmakes/includes.cmake)
 include(cmakes/setSrcs.cmake)
 
+if(POSIXREGEX)
+    add_compile_definitions(POSIXREGEX)
+endif(POSIXREGEX)
 
+if(BOOSTPOSIXREGEX)
+    add_compile_definitions(BOOSTPOSIXREGEX)
+
+endif(BOOSTPOSIXREGEX)
 
 
 
@@ -50,6 +57,13 @@ add_executable(
 
 
 target_include_directories(lispe PRIVATE ${LISPE_INCLUDES})
+
+if(BOOSTPOSIXREGEX)
+    target_link_libraries(lispe PRIVATE Boost::regex)
+    target_compile_definitions(lispe PRIVATE BOOSTPOSIXREGEX)
+
+endif(BOOSTPOSIXREGEX)
+
 if(WIN32)
 target_link_libraries(lispe PRIVATE 
 ws2_32 #links winSocket

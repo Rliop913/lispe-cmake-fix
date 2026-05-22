@@ -30,6 +30,7 @@ set(LISPE_MAIN
     ${CMAKE_CURRENT_SOURCE_DIR}/src/jag.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lispeditor.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/clipboard.cxx
 )
 
 if(WIN32)
@@ -38,13 +39,6 @@ if(WIN32)
     )
 
 endif(WIN32)
-
-
-if(APPLE)#clipboard.cxx only defines copyToClipboard for Apple. and this caused symbol duplication.
-    list(APPEND LISPE_MAIN
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/clipboard.cxx
-    )
-endif(APPLE)
 
 
 

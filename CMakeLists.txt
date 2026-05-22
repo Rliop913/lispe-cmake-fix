@@ -69,6 +69,18 @@ target_link_libraries(lispe PRIVATE
 ws2_32 #links winSocket
 )
 endif(WIN32)
+if(UNIX)
+target_compile_definitions(lispe PRIVATE UNIX)
+endif(UNIX)
+
+if(APPLE)
+target_compile_definitions(lispe PRIVATE APPLE)
+endif(APPLE)
+
+if(LINUX)
+    find_package(Threads REQUIRED)
+    target_link_libraries(lispe PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
+endif(LINUX)
 
 endif(LISPE_EXECUTABLE)
 

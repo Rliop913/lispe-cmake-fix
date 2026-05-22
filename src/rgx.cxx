@@ -15,6 +15,7 @@
  You can try to compile with BOOSTPOSIXREGEX
  */
 
+#include "boost/regex/v5/pattern_except.hpp"
 #ifdef BOOSTPOSIXREGEX
 #include <boost/regex.hpp>
 using boost::regex;
@@ -26,6 +27,7 @@ using boost::wsregex_token_iterator;
 using boost::wsmatch;
 using boost::sregex_iterator;
 using boost::wsregex_iterator;
+using boost::regex_error;
 #else
 #ifdef POSIXREGEX
 #include <regex>
@@ -39,6 +41,7 @@ using std::wsregex_token_iterator;
 using std::wsmatch;
 using std::sregex_iterator;
 using std::wsregex_iterator;
+using std::regex_error;
 #endif
 #endif
 
@@ -1119,7 +1122,7 @@ public:
         try {
             au = new wregex(strvalue);
         }
-        catch (const std::regex_error& e) {
+        catch (const regex_error& e) {
             au = NULL;
             throw new Error(e.what());
         }

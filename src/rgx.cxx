@@ -15,7 +15,7 @@
  You can try to compile with BOOSTPOSIXREGEX
  */
 
-#include "boost/regex/v5/pattern_except.hpp"
+
 #ifdef BOOSTPOSIXREGEX
 #include <boost/regex.hpp>
 using boost::regex;
